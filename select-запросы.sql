@@ -7,7 +7,7 @@ limit 1;
 
 select title
 from track
-where time > 210;
+where time >= 210;
 
 select title
 from collection
@@ -19,7 +19,14 @@ where name not like '% %';
 
 select title
 from track
-where title like '%мой%' or title like '%my%';
+where title ilike 'мой %' 
+	or title ilike '% мой %'
+	or title ilike '% мой'
+	or title ilike 'мой'
+	or title ilike 'my %' 
+	or title ilike '% my %'
+	or title ilike '% my'
+	or title ilike 'my';
 
 --Задание 3
 
@@ -60,12 +67,11 @@ where artist.name = 'Loc-Dog';
 
 --Задание 4
 
-select album.title
+select distinct album.title
 from album
 join artist_album on album.album_id = artist_album.album_id
-join artist on artist_album.artist_id = artist.artist_id
-join genre_artist on artist.artist_id = genre_artist.artist_id
-group by album.title
+join genre_artist on artist_album.artist_id = genre_artist.artist_id
+group by album.title, artist_album.artist_id
 having count(distinct genre_artist.genre_id) > 1;
 
 select track.title
